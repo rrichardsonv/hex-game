@@ -1,0 +1,12 @@
+{
+  "game":{
+    "board":{
+      "width": 700,
+      "height": 600,
+      "border": 30
+    },
+    "hex":{
+      "size": 10
+    }
+  }
+}
