@@ -2,9 +2,12 @@ import React from 'react'
 import '../public/css/Canvas.css'
 import Hex from './Hex'
 import Grid from './Grid'
+import { makeTerrainPath } from './GameFunctions'
+import { Terrain } from './GameConstants'
 
 const Canvas = React.createClass({
   render () {
+    const { stroke, fill, d } = Terrain.path
     return (
       <svg
         width='700'
@@ -14,7 +17,21 @@ const Canvas = React.createClass({
       >
         {Grid.map((hexObj) => {
           return (
-            <Hex coords={hexObj.points} terrain='desert' />
+            <Hex
+              fill={Terrain.fill}
+              stroke={Terrain.stroke}
+              className={Terrain.name}
+              coords={hexObj.points}
+            />
+          )
+        })}
+        {Grid.map((hexObj) => {
+          return (
+            <path
+              stroke={stroke}
+              fill={fill}
+              d={makeTerrainPath(hexObj.points[5], d.start, d.path)}
+            />
           )
         })}
       </svg>

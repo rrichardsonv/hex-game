@@ -52,6 +52,15 @@ var hexagon = (args) => {
   }
 }
 
+var terrainDetail = (hexPoint, detailStart, path) => {
+  var relativeStart = [hexPoint[0] + detailStart[0], hexPoint[0] + detailStart[0]]
+  return `M${relativeStart} ${path}`
+}
+
+export function makeTerrainPath (hexPoint, detailStart, path) {
+  return terrainDetail(hexPoint, detailStart, path)
+}
+
 export function makeHexagons (gridOfCenters, hexSize) {
   return (
     gridOfCenters.map((item) => {
