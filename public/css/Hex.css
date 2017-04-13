@@ -1,5 +1,5 @@
-.desert{
-  fill: orange;
-  stroke: brown;
-  stroke-width: 1.5px;
+.hex:hover{
+  z-index: 2;
+  stroke: red;
+  stroke-width: 2em solid;
 }

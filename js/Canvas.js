@@ -1,40 +1,67 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import '../public/css/Canvas.css'
 import Hex from './Hex'
 import Grid from './Grid'
-import { makeTerrainPath } from './GameFunctions'
-import { Terrain } from './GameConstants'
+import Texture from './Texture'
+import Overlay from './Overlay'
+import Player from './Player'
+import { Terrain, BoardStats } from './GameConstants'
 
 const Canvas = React.createClass({
+  featureRender (hex) {
+    return {
+      name: hex.terrain,
+      x: Math.floor(hex.center[0]),
+      y: Math.floor(hex.center[1]),
+      icon: hex.icon,
+      pos: hex.pos.join('-')
+    }
+  },
   render () {
-    const { stroke, fill, d } = Terrain.path
+    const { boardHeight, boardWidth } = BoardStats
+    const features = Grid.map((hex) => {
+      return (
+        this.featureRender(hex)
+      )
+    })
+      .filter((feat) => {
+        return (
+          feat.name !== 'Water'
+        )
+      })
     return (
-      <svg
-        width='700'
-        height='600'
-        className='board'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        {Grid.map((hexObj) => {
-          return (
-            <Hex
-              fill={Terrain.fill}
-              stroke={Terrain.stroke}
-              className={Terrain.name}
-              coords={hexObj.points}
-            />
-          )
-        })}
-        {Grid.map((hexObj) => {
-          return (
-            <path
-              stroke={stroke}
-              fill={fill}
-              d={makeTerrainPath(hexObj.points[5], d.start, d.path)}
-            />
-          )
-        })}
-      </svg>
+      <div>
+        <Player />
+        <Overlay features={features} />
+        <svg
+          width={`${boardWidth}`}
+          height={`${boardHeight}`}
+          className='board'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <defs>
+            {Terrain.map((terrain) => {
+              return (
+                <Texture
+                  key={terrain.id}
+                  color={terrain}
+                />
+              )
+            })}
+          </defs>
+          {Grid.map((hexObj) => {
+            return (
+              <Hex
+                key={hexObj.pos.join('-')}
+                handleFeatureClick={this.handleFeatureClick}
+                hexSpecs={hexObj}
+                texture={`url(#${hexObj.terrain})`}
+              />
+            )
+          })}
+        </svg>
+      </div>
     )
   }
 })

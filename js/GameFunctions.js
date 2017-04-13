@@ -1,5 +1,5 @@
 const buildGrid = (maxHeight, maxWidth, yOff, xOff, border) => {
-  var coordGrid = []
+  var grid = []
   var x = 0 + border
   var y = 0 + border
   var j = (maxHeight - border * 2) / yOff
@@ -12,19 +12,19 @@ const buildGrid = (maxHeight, maxWidth, yOff, xOff, border) => {
         coords = []
         coords[0] = x + (col * xOff)
         coords[1] = y + (row * yOff)
-        coordGrid.push(coords)
+        grid.push({coords: coords, pos: [row, col]})
       }
     } else {
       for (col = 0; col < k; col++) {
         coords = []
         coords[0] = x + ((col + 0.5) * xOff)
         coords[1] = y + (row * yOff)
-        coordGrid.push(coords)
+        grid.push({coords: coords, pos: [row, col]})
       }
     }
     col = 0
   }
-  return coordGrid
+  return grid
 }
 
 var hexCorner = (center, size, i) => {
@@ -48,24 +48,35 @@ var hexagon = (args) => {
   return {
     points: hexagonPoints(args.center, args.size),
     center: args.center,
-    pos: 0
+    pos: args.pos,
+    terrain: args.terrain,
+    icon: args.icon
   }
 }
 
-var terrainDetail = (hexPoint, detailStart, path) => {
-  var relativeStart = [hexPoint[0] + detailStart[0], hexPoint[0] + detailStart[0]]
-  return `M${relativeStart} ${path}`
+var rand = (n) => {
+  return (Math.floor(Math.random() * n))
 }
 
-export function makeTerrainPath (hexPoint, detailStart, path) {
-  return terrainDetail(hexPoint, detailStart, path)
+// var terrainDetail = (hexPoint, detailStart, path) => {
+//   var relativeStart = [hexPoint[0] + detailStart[0], hexPoint[0] + detailStart[0]]
+//   return `M${relativeStart} ${path}`
+// }
+
+// export function makeTerrainPath (hexPoint, detailStart, path) {
+//   return terrainDetail(hexPoint, detailStart, path)
+// }
+
+export function randomTerrain (terrains) {
+  return terrains[rand((terrains.length))]
 }
 
-export function makeHexagons (gridOfCenters, hexSize) {
+export function makeHexagons (gridOfCenters, hexSize, terrains) {
   return (
     gridOfCenters.map((item) => {
+      var terrain = randomTerrain(terrains)
       return (
-        hexagon({center: item, size: hexSize})
+        hexagon({terrain: terrain.name, center: item.coords, size: hexSize, pos: item.pos, icon: terrain.icon})
       )
     })
   )

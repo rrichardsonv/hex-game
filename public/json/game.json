@@ -2,24 +2,48 @@
   "game":{
     "board":{
       "width": 700,
-      "height": 600,
+      "height": 610,
       "border": 30
     },
     "hex":{
-      "size": 10
+      "size": 20
     },
     "terrain":[{
-      "name": "desert",
-      "fill": "orange",
-      "stroke": "#894200",
-      "path":{
-        "stroke":"#894200",
-        "fill":"none",
-        "d": {
-          "start": [-8.23, -10.17],
-          "path": "c0,0 2.95862,-6.03084 6.03103,0c3.07241,6.03084 5.57586,0 5.56551,-0.06977c0.01035,0.06977 2.85517,-5.85142 4.90345,0.06977"
-        }
-      }
+      "id": "1",
+      "name": "Desert",
+      "highlight": "#EDC9AF",
+      "main": "orange",
+      "icon": "fa fa-lg fa-sun-o"
+    },{
+      "id": "2",
+      "name": "Water",
+      "highlight": "white",
+      "main": "blue",
+      "icon": "fa fa-lg fa-fish"
+    },{
+      "id": "3",
+      "name": "Forest",
+      "highlight": "#014421",
+      "main": "#2D905D",
+      "icon": "fa fa-lg fa-tree"
+    },{
+      "id": "4",
+      "name": "Grassland",
+      "highlight": "#8DB600",
+      "main": "#D7FF4C",
+      "icon": "fa fa-lg fa-bug"
+    }, {
+      "id": "5",
+      "name": "Snow",
+      "highlight": "#b3bac6",
+      "main": "#e8d9c8",
+      "icon": "fa fa-lg fa-snowflake-o"
+    }, {
+      "id": "6",
+      "name": "Mountain",
+      "highlight": "#ffffff",
+      "main": "#878787",
+      "icon": "fa fa-2x fa-angle-double-up"
     }]
   }
 }
