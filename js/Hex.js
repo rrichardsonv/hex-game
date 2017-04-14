@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setOccupiedHex } from './redux/actionCreators'
 import '../public/css/Hex.css'
 
-const { shape, string, arrayOf, number, func } = React.PropTypes
+const { shape, string, arrayOf, number, func, bool } = React.PropTypes
 
 const Hex = React.createClass({
   propTypes: {
@@ -13,14 +13,9 @@ const Hex = React.createClass({
       points: arrayOf(arrayOf(number))
     }),
     texture: string,
-    handleFeatureClick: func,
     occupiedHex: string,
-    playerTop: number,
-    playerLeft: number,
-    dispatch: func
-  },
-  handleClick () {
-    this.props.handleFeatureClick(this.props.hexSpecs.center, this.props.texture)
+    dispatch: func,
+    occupied: bool
   },
   hexSides () {
     const coords = this.props.hexSpecs.points
@@ -37,20 +32,13 @@ const Hex = React.createClass({
     return output
   },
   componentWillMount () {
-    setInterval(this.checkPlayerPosition, 3000)
-  },
-  checkPlayerPosition () {
-    const sameCol = Math.abs((this.props.playerLeft + 17) - this.props.hexSpecs.center[0]) < 10
-    const sameRow = Math.abs((this.props.playerTop + 15) - this.props.hexSpecs.center[1]) < 10
-    console.log(this.props.occupiedHex)
-    if (sameRow && sameCol) {
-      const hexCoords = this.props.hexSpecs.pos.join('-')
-      this.props.dispatch(setOccupiedHex(hexCoords))
+    if (this.props.occupied) {
+      const pos = this.props.hexSpecs.pos.join('-')
+      this.props.dispatch(setOccupiedHex(pos))
     }
   },
   displayOccupationStatus () {
-    const center = this.props.hexSpecs.center.join('-')
-    if (center === this.props.occupiedHex) {
+    if (this.props.occupied) {
       return { fill: 'red', stroke: 'yellow' }
     } else {
       return { fill: this.props.texture }
@@ -62,16 +50,12 @@ const Hex = React.createClass({
         style={this.displayOccupationStatus()}
         className={`hex ${this.props.hexSpecs.pos.join('-')}`}
         d={this.hexSides()}
-        onClick={this.handleClick}
       />
     )
   }
 })
-
 const mapStateToProps = (state) => {
   return {
-    playerTop: state.playerTop,
-    playerLeft: state.playerLeft,
     occupiedHex: state.occupiedHex
   }
 }

@@ -7,8 +7,13 @@ import Texture from './Texture'
 import Overlay from './Overlay'
 import Player from './Player'
 import { Terrain, BoardStats } from './GameConstants'
+const { number } = React.PropTypes
 
 const Canvas = React.createClass({
+  propTypes: {
+    playerTop: number,
+    playerLeft: number
+  },
   featureRender (hex) {
     return {
       name: hex.terrain,
@@ -17,6 +22,11 @@ const Canvas = React.createClass({
       icon: hex.icon,
       pos: hex.pos.join('-')
     }
+  },
+  checkPlayerPosition (center) {
+    const sameCol = Math.abs((this.props.playerLeft + 17) - center[0]) < 10
+    const sameRow = Math.abs((this.props.playerTop + 15) - center[1]) < 10
+    return (sameRow && sameCol)
   },
   render () {
     const { boardHeight, boardWidth } = BoardStats
@@ -53,6 +63,7 @@ const Canvas = React.createClass({
           {Grid.map((hexObj) => {
             return (
               <Hex
+                occupied={this.checkPlayerPosition(hexObj.center)}
                 key={hexObj.pos.join('-')}
                 handleFeatureClick={this.handleFeatureClick}
                 hexSpecs={hexObj}
@@ -66,4 +77,11 @@ const Canvas = React.createClass({
   }
 })
 
-export default Canvas
+const mapStateToProps = (state) => {
+  return {
+    playerTop: state.playerTop,
+    playerLeft: state.playerLeft
+  }
+}
+
+export default connect(mapStateToProps)(Canvas)
