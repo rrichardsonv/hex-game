@@ -1,17 +1,12 @@
 import React from 'react'
-import { BoardStats, HexStats } from './GameConstants'
+import { BoardStats } from './GameConstants'
 import '../public/css/Overlay.css'
-const { shape, number, string, arrayOf } = React.PropTypes
+import TileFeature from './TileFeature'
+const { object, arrayOf } = React.PropTypes
 
 const Overlay = React.createClass({
   propTypes: {
-    features: arrayOf(shape({
-      name: string,
-      x: number,
-      y: number,
-      icon: string,
-      pos: string
-    }))
+    features: arrayOf(object)
   },
   render () {
     const { boardHeight, boardWidth } = BoardStats
@@ -25,18 +20,7 @@ const Overlay = React.createClass({
       >
         {this.props.features.map((feat) => {
           return (
-            <div
-              key={feat.pos}
-              className={`feature ${feat.pos} ${feat.name}`}
-              style={{
-                top: `${feat.y - (HexStats.hexSize / 2)}px`,
-                left: `${feat.x - (HexStats.hexSize / 2)}px`
-              }}
-            >
-              <i
-                className={feat.icon}
-              />
-            </div>
+            <TileFeature key={feat.pos} feature={feat} />
           )
         })}
       </div>
