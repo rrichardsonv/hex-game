@@ -1,0 +1,5 @@
+.hex:hover{
+  z-index: 2;
+  stroke: red;
+  stroke-width: 2em solid;
+}
